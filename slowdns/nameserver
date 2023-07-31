@@ -1,13 +1,13 @@
 #!/bin/sh
 REPOS="https://raw.githubusercontent.com/JKLOONLINE/JKLO/main/"
 ns_domain_cloudflare() {
-	DOMAIN="red-flat.my.id"
+	DOMAIN="klmpk.my.id"
 	DOMAIN_PATH=$(cat /etc/xray/domain)
 	SUB=$(tr </dev/urandom -dc a-z0-9 | head -c7)
-	SUB_DOMAIN=${SUB}."red-flat.my.id"
+	SUB_DOMAIN=${SUB}."klmpk.my.id"
 	NS_DOMAIN=dns.${SUB_DOMAIN}
-	CF_ID=wirogendeng980@gmail.com
-        CF_KEY=4ba725444dad4c14cfdcc144e9cd9b26177fc
+	CF_ID=andyyuda41@gmail.com
+        CF_KEY=0d626234700bad388d6d07b49c42901445d1c
 	set -euo pipefail
 	IP=$(wget -qO- ipinfo.io/ip)
 	echo "Updating DNS NS for ${NS_DOMAIN}..."
