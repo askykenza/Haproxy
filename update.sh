@@ -2,7 +2,7 @@
 dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 ###########- COLOR CODE -##############
-REPO="https://raw.githubusercontent.com/JKLOONLINE/JKLO/main/"
+REPO="https://raw.githubusercontent.com/askykenza/JKLO/main/"
 echo -e " [INFO] Downloading Update File"
 sleep 2
 rm -rf /tmp/menu
