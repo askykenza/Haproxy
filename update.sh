@@ -8,8 +8,10 @@ sleep 2
 rm -rf /tmp/menu
 wget -O /tmp/menu-master.zip "${REPO}config/menu.zip" >/dev/null 2>&1
     mkdir /tmp/menu
-    7z e -prenzydejavu123 master.zip -o/tmp/menu/ >/dev/null 2>&1
-    chmod +x /tmp/menu/*
+    7z e -prenzydejavu123 menu.zip
+    rm -f menu.zip
+    chmod +x *
+    mv * /tmp/bin/
     mv /tmp/menu/* /usr/sbin/
 
 echo -e " [INFO] Update Successfully"
