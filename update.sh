@@ -22,5 +22,5 @@ mkdir -p /etc/ss
 rm -rf update.sh
 sleep 2
 read -n 1 -s -r -p "Press [ Enter ] to back on menu"
+clear
 menu
-exit
