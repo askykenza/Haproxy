@@ -1,11 +1,12 @@
 [Unit]
 Description=WebSocket
+Documentation=https://github.com/rullpqh
 After=syslog.target network-online.target
 
 [Service]
 User=root
 NoNewPrivileges=true
-ExecStart=/usr/sbin/websocket -f /etc/websocket/tun.conf
+ExecStart=/usr/bin/ws -f /usr/bin/tun.conf
 Restart=on-failure
 RestartPreventExitStatus=23
 LimitNPROC=10000
