@@ -4,14 +4,13 @@ biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 ###########- COLOR CODE -##############
 REPO="https://raw.githubusercontent.com/askykenza/JKLO/main/"
 echo -e " [INFO] Downloading Update File"
-sleep 2
+echo -e " Waiting For Update Please Wait"
+sleep 5
 rm -rf /tmp/menu
 wget -O /tmp/menu-master.zip "${REPO}config/menu.zip" >/dev/null 2>&1
     mkdir /tmp/menu
-    7z e -prenzydejavu123 menu.zip
-    rm -f menu.zip
-    chmod +x *
-    mv * /tmp/bin/
+    7z e /tmp/menu-master.zip -o/tmp/menu/ >/dev/null 2>&1
+    chmod +x /tmp/menu/*
     mv /tmp/menu/* /usr/sbin/
 
 echo -e " [INFO] Update Successfully"
