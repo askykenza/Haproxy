@@ -1,12 +1,12 @@
 [Unit]
 Description=WebSocket
-Documentation=https://github.com/rullpqh
+Documentation=https://kang-parkir.me
 After=syslog.target network-online.target
 
 [Service]
 User=root
 NoNewPrivileges=true
-ExecStart=/usr/bin/ws -f /usr/bin/tun.conf
+ExecStart=/usr/local/Premium/ws-epro -f /etc/Premium/ws-epro.conf
 Restart=on-failure
 RestartPreventExitStatus=23
 LimitNPROC=10000
