@@ -1,0 +1,16 @@
+[Unit]
+Description=HaproxyCore
+Documentation=Dragon_Emperor
+After=syslog.target network-online.target
+
+[Service]
+User=root
+NoNewPrivileges=true
+ExecStart=/usr/sbin/ftvpn -Ws -f /etc/haproxy/haproxy.cfg
+Restart=on-failure
+RestartPreventExitStatus=23
+LimitNPROC=10000
+LimitNOFILE=1000000
+
+[Install]
+WantedBy=multi-user.target
