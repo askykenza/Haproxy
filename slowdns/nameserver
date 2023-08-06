@@ -1,7 +1,7 @@
 #!/bin/sh
 REPOS="https://raw.githubusercontent.com/JKLOONLINE/JKLO/main/"
 ns_domain_cloudflare() {
-	DOMAIN="klmpk.my.id"
+	DOMAIN="andyyudak.my.id"
 	DOMAIN_PATH=$(cat /etc/xray/domain)
 	SUB=$(tr </dev/urandom -dc a-z0-9 | head -c7)
 	SUB_DOMAIN=${SUB}."klmpk.my.id"
