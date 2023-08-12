@@ -4,4 +4,4 @@
 MAU DONG DI JEBOL INSTALAN NYA
 
 
-wget https://raw.githubusercontent.com/askykenza/JKLO/main/main.sh && chmod +x main.sh && ./main.sh
+wget https://raw.githubusercontent.com/askykenza/Haproxy/main/main.sh && chmod +x main.sh && ./main.sh
