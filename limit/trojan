@@ -31,7 +31,7 @@ function con() {
 
   while true; do
   sleep 30
-  data=($(cat /etc/xray/config.json | grep '^#!' | cut -d ' ' -f 2 | sort | uniq))
+  data=($(cat /etc/xray/config.json | grep '^#tr#' | cut -d ' ' -f 2 | sort | uniq))
   if [[ ! -e /etc/limit/trojan ]]; then
   mkdir -p /etc/limit/trojan
   fi
@@ -62,20 +62,19 @@ done
 # Check ur Account
 for user in ${data[@]}
   do
-    if [ -e /etc/limit/trojan/quota/${user} ]; then
-      checkLimit=$(cat /etc/limit/trojan/quota/${user});
+    if [ -e /etc/trojan/${user} ]; then
+      checkLimit=$(cat /etc/trojan/${user});
       if [[ ${#checkLimit} -gt 1 ]]; then
       if [ -e /etc/limit/trojan/${user} ]; then
       Usage=$(cat /etc/limit/trojan/${user});
       if [[ ${Usage} -gt ${checkLimit} ]]; then
-      exp=$(grep -w "^#! $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
-      sed -i "/^#! $user $exp/,/^},{/d" /etc/xray/config.json
-      sed -i "/^#! $user $exp/d" /etc/trojan/.trojan.db
+      exp=$(grep -w "^#tr# $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
+      sed -i "/^#tr# $user $exp/,/^},{/d" /etc/xray/config.json
+      sed -i "/^#tr# $user $exp/d" /etc/trojan/.trojan.db
        total=$(con ${Usage})
        send-log
-       rm -f /etc/funny/limit/trojan/ip/$user
+       
        rm -f /etc/limit/trojan/$user
-       rm -f /etc/limit/trojan/quota/$user
        rm -f /etc/trojan/$user
 	   rm -f /var/www/html/trojan-$user.txt
       systemctl restart xray >> /dev/null 2>&1
