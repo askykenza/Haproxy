@@ -32,7 +32,7 @@ function con() {
 
   while true; do
   sleep 30
-  data=($(cat /etc/xray/config.json | grep '^#&' | cut -d ' ' -f 2 | sort | uniq))
+  data=($(cat /etc/xray/config.json | grep '^#vl#' | cut -d ' ' -f 2 | sort | uniq))
   if [[ ! -e /etc/limit/vless ]]; then
   mkdir -p /etc/limit/vless
   fi
@@ -63,21 +63,21 @@ done
 # Check ur Account
 for user in ${data[@]}
   do
-    if [ -e /etc/limit/vless/quota/${user} ]; then
-      checkLimit=$(cat /etc/limit/vless/quota/${user});
+    if [ -e /etc/vless/${user} ]; then
+      checkLimit=$(cat /etc/vless/${user});
       if [[ ${#checkLimit} -gt 1 ]]; then
       if [ -e /etc/limit/vless/${user} ]; then
       Usage=$(cat /etc/limit/vless/${user});
       if [[ ${Usage} -gt ${checkLimit} ]]; then
       total=$(con ${Usage})
-      exp=$(grep -w "^#& $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
-      sed -i "/^#& $user $exp/,/^},{/d" /etc/xray/config.json
-      sed -i "/^#& $user $exp/d" /etc/vless/.vless.db
+      exp=$(grep -w "^#vl# $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
+      sed -i "/^#vl# $user $exp/,/^},{/d" /etc/xray/config.json
+      sed -i "/^#vl# $user $exp/d" /etc/vless/.vless.db
       send-log
-      rm -f /etc/funny/limit/vless/ip/$user
+      
 	  rm -f /etc/vless/$user
 	  rm -f /etc/limit/vless/$user
-	  rm -f /etc/limit/vless/quota/$user
+	  
 	  rm -f /var/www/html/vless-$user.txt
       systemctl restart xray >> /dev/null 2>&1
       else
