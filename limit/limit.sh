@@ -1,4 +1,4 @@
-REPO="https://raw.githubusercontent.com/askykenza/Haproxy/main/
+REPO="https://raw.githubusercontent.com/nishikazekazata/hah/main/"
 wget -q -O /etc/systemd/system/limitvmess.service "${REPO}limit/limitvmess.service" && chmod +x limitvmess.service >/dev/null 2>&1
 wget -q -O /etc/systemd/system/limitvless.service "${REPO}limit/limitvless.service" && chmod +x limitvless.service >/dev/null 2>&1
 wget -q -O /etc/systemd/system/limittrojan.service "${REPO}limit/limittrojan.service" && chmod +x limittrojan.service >/dev/null 2>&1
@@ -16,11 +16,11 @@ systemctl enable --now limitvmess
 systemctl enable --now limitvless
 systemctl enable --now limittrojan
 systemctl enable --now limitshadowsocks
-systemctl start limitvmess
-systemctl start limitvless
-systemctl start limittrojan
-systemctl start limitshadowsocks
-systemctl restart limitvmess
-systemctl restart limitvless
-systemctl restart limittrojan
-systemctl restart limitshadowsocks
+# systemctl start limitvmess
+# systemctl start limitvless
+# systemctl start limittrojan
+# systemctl start limitshadowsocks
+# systemctl restart limitvmess
+# systemctl restart limitvless
+# systemctl restart limittrojan
+# systemctl restart limitshadowsocks

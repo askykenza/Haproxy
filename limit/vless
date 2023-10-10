@@ -1,7 +1,38 @@
 #!/bin/bash
+function send-log(){
+CHATID=$(grep -E "^#bot# " "/etc/bot/.bot.db" | cut -d ' ' -f 3)
+KEY=$(grep -E "^#bot# " "/etc/bot/.bot.db" | cut -d ' ' -f 2)
+TIME="10"
+URL="https://api.telegram.org/bot$KEY/sendMessage"
+TEXT="
+<code>────────────────────</code>
+<b>⚠️NOTIF QUOTA HABIS⚠️</b>
+<code>────────────────────</code>
+<code>Username  : </code><code>$user</code>
+<code>Usage     : </code><code>$total</code>
+<code>────────────────────</code>
+"
+curl -s --max-time $TIME -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
+}
+
+function con() {
+    local -i bytes=$1;
+    if [[ $bytes -lt 1024 ]]; then
+        echo "${bytes}B"
+    elif [[ $bytes -lt 1048576 ]]; then
+        echo "$(( (bytes + 1023)/1024 ))KB"
+    elif [[ $bytes -lt 1073741824 ]]; then
+        echo "$(( (bytes + 1048575)/1048576 ))MB"
+    else
+        echo "$(( (bytes + 1073741823)/1073741824 ))GB"
+    fi
+}
+
+
+
   while true; do
   sleep 30
-  data=($(cat /etc/xray/config.json | grep '^#vl#' | cut -d ' ' -f 2 | sort | uniq))
+  data=($(cat /etc/xray/config.json | grep '^#&' | cut -d ' ' -f 2 | sort | uniq))
   if [[ ! -e /etc/limit/vless ]]; then
   mkdir -p /etc/limit/vless
   fi
@@ -32,14 +63,22 @@ done
 # Check ur Account
 for user in ${data[@]}
   do
-    if [ -e /etc/vless/${user} ]; then
-      checkLimit=$(cat /etc/vless/${user});
+    if [ -e /etc/limit/vless/quota/${user} ]; then
+      checkLimit=$(cat /etc/limit/vless/quota/${user});
       if [[ ${#checkLimit} -gt 1 ]]; then
       if [ -e /etc/limit/vless/${user} ]; then
       Usage=$(cat /etc/limit/vless/${user});
       if [[ ${Usage} -gt ${checkLimit} ]]; then
-      exp=$(grep -w "^#vl# $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
-      sed -i "/^#vl# $user $exp/,/^},{/d" /etc/xray/config.json
+      total=$(con ${Usage})
+      exp=$(grep -w "^#& $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
+      sed -i "/^#& $user $exp/,/^},{/d" /etc/xray/config.json
+      sed -i "/^#& $user $exp/d" /etc/vless/.vless.db
+      send-log
+      rm -f /etc/funny/limit/vless/ip/$user
+	  rm -f /etc/vless/$user
+	  rm -f /etc/limit/vless/$user
+	  rm -f /etc/limit/vless/quota/$user
+	  rm -f /var/www/html/vless-$user.txt
       systemctl restart xray >> /dev/null 2>&1
       else
       echo ""
