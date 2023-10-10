@@ -9,7 +9,7 @@ TEXT="
 <b>⚠️NOTIF QUOTA HABIS XRAY VMESS⚠️</b>
 <code>────────────────────</code>
 <code>Username  : </code><code>$user</code>
-<code>limit Quota: </code><code>$checkLimit</code>
+<code>limit Quota: </code><code>$total2</code>
 <code>Usage     : </code><code>$total</code>
 <code>────────────────────</code>
 "
@@ -32,7 +32,7 @@ function con() {
 
   while true; do
   sleep 30
-  data=($(cat /etc/xray/config.json | grep '^###' | cut -d ' ' -f 2 | sort | uniq))
+  data=($(cat /etc/xray/config.json | grep '#vm#' | cut -d ' ' -f 2 | sort | uniq))
   if [[ ! -e /etc/limit/vmess ]]; then
   mkdir -p /etc/limit/vmess
   fi
@@ -63,22 +63,21 @@ done
 # Check ur Account
 for user in ${data[@]}
   do
-    if [ -e /etc/limit/vmess/quota/${user} ]; then
-      checkLimit=$(cat /etc/limit/vmess/quota/${user});
+    if [ -e /etc/vmess/${user} ]; then
+      checkLimit=$(cat /etc/vmess/${user});
       if [[ ${#checkLimit} -gt 1 ]]; then
       if [ -e /etc/limit/vmess/${user} ]; then
       Usage=$(cat /etc/limit/vmess/${user});
       total=$(con ${Usage})
+      total2=$(con ${checkLimit})
       if [[ ${Usage} -gt ${checkLimit} ]]; then
-      exp=$(grep -w "^### $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
-      sed -i "/^### $user $exp/,/^},{/d" /etc/xray/config.json
-      sed -i "/^### $user $exp/d" /etc/vmess/.vmess.db
+      exp=$(grep -w "#vm# $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
+      sed -i "/#vm# $user $exp/,/^},{/d" /etc/xray/config.json
+      sed -i "/#vm# $user $exp/d" /etc/vmess/.vmess.db
       send-log
       rm -rf /etc/limit/vmess/${user}
-      rm -f /etc/funny/limit/vmess/ip/$user
 	  rm -f /etc/vmess/$user
 	  rm -f /etc/limit/vmess/$user
-	  rm -f /etc/limit/vmess/quota/$user
 	  rm -f /var/www/html/vmess-$user.txt
       systemctl restart xray >> /dev/null 2>&1
       else
